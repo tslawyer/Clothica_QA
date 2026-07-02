@@ -11,3 +11,14 @@ test("Successfull login", async ({ request }) => {
   expect(body).toHaveProperty("token");
   expect(body.is_admin).toBe(false);
 });
+
+test("Failed to log in", async ({ request }) => {
+  const authClient = new AuthCLient(request);
+  const response = await authClient.login({
+    email: "nikita8078@gmail.com",
+    password: "abracadabra",
+  });
+  const respBody = await response.json();
+  expect(response.status()).toBe(401);
+  expect(respBody.detail).toBe("Wrong email or password");
+});
